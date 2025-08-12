@@ -4,15 +4,34 @@ export interface Figure {
   getArea(): number;
 }
 
+enum Color {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+enum Shape {
+  Triangle = 'triangle',
+  Circle = 'circle',
+  Rectangle = 'rectangle',
+}
+
 export class Triangle implements Figure {
   constructor(
-    public color: string,
+    public color: Color,
     private a: number,
     private b: number,
     private c: number,
   ) {
-    if (a <= 0 || b <= 0 || c <= 0) {
-      throw new Error('Side length less than or equal to Zero');
+    if (a <= 0) {
+      throw new Error(`Side length a = ${this.a}: side length cannot be <= 0`);
+    }
+
+    if (b <= 0) {
+      throw new Error(`Side length b = ${this.b}: side length cannot be <= 0`);
+    }
+
+    if (c <= 0) {
+      throw new Error(`Side length c = ${this.c}: side length cannot be <= 0`);
     }
 
     const maxLength: number = Math.max(this.a, Math.max(this.b, this.c));
@@ -22,25 +41,31 @@ export class Triangle implements Figure {
     switch (maxSide) {
       case 'a':
         if (maxLength >= this.b + this.c) {
-          throw new Error('Side lengths cannot create trianlge');
+          throw new Error(
+            `Side lengths ${this.a} ${this.b} ${this.c} cannot create triangle`,
+          );
         }
         break;
 
       case 'b':
         if (maxLength >= this.a + this.c) {
-          throw new Error('Side lengths cannot create trianlge');
+          throw new Error(
+            `Side lengths ${this.a} ${this.b} ${this.c} cannot create triangle`,
+          );
         }
         break;
 
       case 'c':
         if (maxLength >= this.a + this.b) {
-          throw new Error('Side lengths cannot create trianlge');
+          throw new Error(
+            `Side lengths ${this.a} ${this.b} ${this.c} cannot create triangle`,
+          );
         }
         break;
     }
   }
 
-  public shape = 'triangle';
+  public shape = Shape.Triangle;
 
   getArea(): number {
     const s: number = 0.5 * (this.a + this.b + this.c);
@@ -48,82 +73,46 @@ export class Triangle implements Figure {
       s * (s - this.a) * (s - this.b) * (s - this.c),
     );
 
-    const decIndex: number = area.toString().indexOf('.');
-
-    if (decIndex === -1) {
-      return area;
-    }
-
-    const stringArea: string = area.toString();
-    const stringValue: string =
-      stringArea.substring(0, decIndex) +
-      '.' +
-      stringArea.substring(decIndex + 1, decIndex + 3);
-
-    return parseFloat(stringValue);
+    return Math.floor(area * 100) / 100;
   }
 }
 
 export class Circle implements Figure {
   constructor(
-    public color: string,
+    public color: Color,
     private r: number,
   ) {
     if (r <= 0) {
-      throw new Error('Radius length less than or equal to Zero');
+      throw new Error('Radius length less than or equal to zero');
     }
   }
 
-  public shape = 'circle';
+  public shape = Shape.Circle;
 
   getArea(): number {
     const area: number = Math.PI * this.r * this.r;
 
-    const decIndex: number = area.toString().indexOf('.');
-
-    if (decIndex === -1) {
-      return area;
-    }
-
-    const stringArea: string = area.toString();
-    const stringValue: string =
-      stringArea.substring(0, decIndex) +
-      '.' +
-      stringArea.substring(decIndex + 1, decIndex + 3);
-
-    return parseFloat(stringValue);
+    return Math.floor(area * 100) / 100;
   }
 }
 
 export class Rectangle implements Figure {
   constructor(
-    public color: string,
-    private a: number,
-    private b: number,
+    public color: Color,
+    private width: number,
+    private height: number,
   ) {
-    if (a <= 0 || b <= 0) {
-      throw new Error('Side length less than or equal to Zero');
+    if (width <= 0 || height <= 0) {
+      throw new Error('Side length less than or equal to zero');
     }
   }
 
-  public shape = 'rectangle';
+  public shape = Shape.Rectangle;
 
   getArea(): number {
-    const area: number = this.a * this.b;
+    const area: number = this.width * this.height;
 
-    const decIndex: number = area.toString().indexOf('.');
-
-    if (decIndex === -1) {
-      return area;
-    }
-
-    const stringArea: string = area.toString();
-    const stringValue: string =
-      stringArea.substring(0, decIndex) +
-      '.' +
-      stringArea.substring(decIndex + 1, decIndex + 3);
-
-    return parseFloat(stringValue);
+    return Math.floor(area * 100) / 100;
   }
 }
 
