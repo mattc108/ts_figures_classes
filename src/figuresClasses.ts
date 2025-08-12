@@ -1,9 +1,3 @@
-export interface Figure {
-  shape: string;
-  color: string;
-  getArea(): number;
-}
-
 enum Color {
   Red = 'red',
   Green = 'green',
@@ -14,7 +8,11 @@ enum Shape {
   Circle = 'circle',
   Rectangle = 'rectangle',
 }
-
+export interface Figure {
+  shape: Shape;
+  color: Color;
+  getArea(): number;
+}
 export class Triangle implements Figure {
   constructor(
     public color: Color,
@@ -83,7 +81,7 @@ export class Circle implements Figure {
     private r: number,
   ) {
     if (r <= 0) {
-      throw new Error('Radius length less than or equal to zero');
+      throw new Error(`Radius r = ${this.r}: radius must be > 0`);
     }
   }
 
@@ -103,7 +101,9 @@ export class Rectangle implements Figure {
     private height: number,
   ) {
     if (width <= 0 || height <= 0) {
-      throw new Error('Side length less than or equal to zero');
+      throw new Error(
+        `Width = ${this.width}, Height = ${this.height}: both must be > 0`,
+      );
     }
   }
 
